@@ -104,7 +104,7 @@ public class GraphHopper {
     private String ghLocation = "";
     private DAType dataAccessDefaultType = DAType.RAM_STORE;
     private final LinkedHashMap<String, String> dataAccessConfig = new LinkedHashMap<>();
-    private boolean elevation = false;
+    private boolean elevation = true;
     private LockFactory lockFactory = new NativeFSLockFactory();
     private boolean allowWrites = true;
     private boolean fullyLoaded = false;
@@ -859,7 +859,6 @@ public class GraphHopper {
         encodedValuesWithProps.putIfAbsent(RoadEnvironment.KEY, new PMap());
         // used by instructions...
         encodedValuesWithProps.putIfAbsent(Roundabout.KEY, new PMap());
-        encodedValuesWithProps.putIfAbsent(VehicleAccess.key("car"), new PMap());
         encodedValuesWithProps.putIfAbsent(RoadClassLink.KEY, new PMap());
         encodedValuesWithProps.putIfAbsent(MaxSpeed.KEY, new PMap());
 

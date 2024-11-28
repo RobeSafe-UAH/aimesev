@@ -38,7 +38,8 @@ public class HungaryCountryRule implements CountryRule {
             return currentRoadAccess;
         }
 
-        if (currentRoadAccess != RoadAccess.YES) {
+        // Override only bogus "yes" and missing/other
+        if (currentRoadAccess != RoadAccess.YES && currentRoadAccess != RoadAccess.OTHER) {
             return currentRoadAccess;
         }
 
@@ -47,7 +48,7 @@ public class HungaryCountryRule implements CountryRule {
             return RoadAccess.DESTINATION;
         }
 
-        return RoadAccess.YES;
+        return currentRoadAccess;
     }
 
     @Override

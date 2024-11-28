@@ -30,12 +30,12 @@ public class ModeAccessParser implements TagParser {
     private final boolean skipEmergency;
     private final Set<String> barriers;
 
-    public ModeAccessParser(List<String> restrictionKeys, BooleanEncodedValue accessEnc,
+    public ModeAccessParser(TransportationMode mode, BooleanEncodedValue accessEnc,
                             boolean skipEmergency, BooleanEncodedValue roundaboutEnc,
                             Set<String> restrictions, Set<String> barriers) {
         this.accessEnc = accessEnc;
         this.roundaboutEnc = roundaboutEnc;
-        this.restrictionKeys = restrictionKeys;
+        restrictionKeys = OSMRoadAccessParser.toOSMRestrictions(mode);
         vehicleForward = restrictionKeys.stream().map(r -> r + ":forward").toList();
         vehicleBackward = restrictionKeys.stream().map(r -> r + ":backward").toList();
         ignoreOnewayKeys = restrictionKeys.stream().map(r -> "oneway:" + r).toList();

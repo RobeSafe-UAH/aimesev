@@ -24,6 +24,7 @@ import com.graphhopper.ResponsePath;
 import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.LMProfile;
 import com.graphhopper.config.Profile;
+import com.graphhopper.util.TurnCostsConfig;
 import com.graphhopper.reader.dem.SRTMProvider;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.*;
@@ -710,8 +711,7 @@ public class RoutingAlgorithmWithOSMTest {
                         "foot_access, foot_priority, foot_average_speed, " +
                         "bike_access, bike_priority, bike_average_speed, foot_network, roundabout, " +
                         "mtb_access, mtb_priority, mtb_average_speed, mtb_rating, " +
-                        "racingbike_access, racingbike_priority, racingbike_average_speed, " +
-                        "foot_road_access, bike_road_access, country, road_class").
+                        "racingbike_access, racingbike_priority, racingbike_average_speed").
                 setGraphHopperLocation(GH_LOCATION);
         hopper.getRouterConfig().setSimplifyResponse(false);
         hopper.setMinNetworkSize(0);

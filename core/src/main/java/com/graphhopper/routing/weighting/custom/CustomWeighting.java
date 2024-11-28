@@ -21,6 +21,8 @@ import com.graphhopper.routing.weighting.TurnCostProvider;
 import com.graphhopper.routing.weighting.Weighting;
 import com.graphhopper.util.CustomModel;
 import com.graphhopper.util.EdgeIteratorState;
+import com.graphhopper.util.PointList;
+import com.graphhopper.util.FetchMode;
 
 import static com.graphhopper.routing.weighting.TurnCostProvider.NO_TURN_COST_PROVIDER;
 
@@ -108,6 +110,40 @@ public final class CustomWeighting implements Weighting {
     public double calcMinWeightPerDistance() {
         return 1d / (maxSpeedCalc.calcMax() / SPEED_CONV) / maxPrioCalc.calcMax() + distanceInfluence;
     }
+
+    // @Override
+    // public double calcEdgeWeight(EdgeIteratorState edgeState, boolean reverse) {
+    //     double priority = edgeToPriorityMapping.get(edgeState, reverse);
+    //     if (priority == 0) return Double.POSITIVE_INFINITY;
+
+    //     final double distance = edgeState.getDistance();
+    //     double seconds = calcSeconds(distance, edgeState, reverse);
+    //     if (Double.isInfinite(seconds)) return Double.POSITIVE_INFINITY;
+
+    //     PointList points = edgeState.fetchWayGeometry(FetchMode.PILLAR_ONLY);
+    //     double startElevation = 0;
+    //     double endElevation = 0;
+
+    //     try{
+    //         startElevation = points.is3D() ? points.getEle(0) : 0;
+    //         endElevation = points.is3D() ? points.getEle(points.size() - 1) : 0;
+    //     } catch (Exception e) {
+    //     System.out.println("Error retrieving elevation: " + e.getMessage());
+    //     }
+        
+    //     System.out.println("Start Elevation: " + startElevation);
+    //     System.out.println("End Elevation: " + endElevation);
+
+    //     double elevationChange = endElevation - startElevation;
+    //     double elevationFactor = 1.0 + (elevationChange > 0 ? elevationChange * 0.1 : elevationChange * 0.05);
+
+    //     // add penalty at start/stop/via points
+    //     if (edgeState.get(EdgeIteratorState.UNFAVORED_EDGE)) seconds += headingPenaltySeconds;
+
+    //     double distanceCosts = distance * distanceInfluence * elevationFactor;
+    //     if (Double.isInfinite(distanceCosts)) return Double.POSITIVE_INFINITY;
+    //     return seconds / priority + distanceCosts;
+    // }
 
     @Override
     public double calcEdgeWeight(EdgeIteratorState edgeState, boolean reverse) {

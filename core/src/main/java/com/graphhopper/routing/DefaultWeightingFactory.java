@@ -29,6 +29,7 @@ import com.graphhopper.routing.weighting.TurnCostProvider;
 import com.graphhopper.routing.weighting.Weighting;
 import com.graphhopper.routing.weighting.custom.CustomModelParser;
 import com.graphhopper.routing.weighting.custom.CustomWeighting;
+import com.graphhopper.routing.weighting.custom.CustomEfficientWeighting;
 import com.graphhopper.storage.BaseGraph;
 import com.graphhopper.util.CustomModel;
 import com.graphhopper.util.PMap;
@@ -78,6 +79,19 @@ public class DefaultWeightingFactory implements WeightingFactory {
 
         Weighting weighting = null;
         if (CustomWeighting.NAME.equalsIgnoreCase(weightingStr)) {
+            final CustomModel queryCustomModel = requestHints.getObject(CustomModel.KEY, null);
+            final CustomModel mergedCustomModel = CustomModel.merge(profile.getCustomModel(), queryCustomModel);
+            if (requestHints.has(Parameters.Routing.HEADING_PENALTY))
+                mergedCustomModel.setHeadingPenalty(requestHints.getDouble(Parameters.Routing.HEADING_PENALTY, Parameters.Routing.DEFAULT_HEADING_PENALTY));
+            if (hints.has("cm_version")) {
+                if (!hints.getString("cm_version", "").equals("2"))
+                    throw new IllegalArgumentException("cm_version: \"2\" is required");
+                weighting = CustomModelParser.createWeighting2(encodingManager, turnCostProvider, mergedCustomModel);
+            } else
+                weighting = CustomModelParser.createWeighting(encodingManager, turnCostProvider, mergedCustomModel);
+
+        } else if (CustomEfficientWeighting.NAME.equalsIgnoreCase(weightingStr)) {
+            System.out.println(weightingStr);
             final CustomModel queryCustomModel = requestHints.getObject(CustomModel.KEY, null);
             final CustomModel mergedCustomModel = CustomModel.merge(profile.getCustomModel(), queryCustomModel);
             if (requestHints.has(Parameters.Routing.HEADING_PENALTY))
